@@ -35,6 +35,7 @@ class TestAtLeastDistance(unittest.TestCase):
     def test_long(self):
         collection = ['abcdefghijk', 'a-c^efghijk', 'abcdef@h$jk']
 
+        self.assertFalse(at_least_distance('bcdefghijk', collection))
         self.assertTrue(at_least_distance('a_defghi_k', collection))
         self.assertTrue(at_least_distance('abcd___hijk', collection))
 
