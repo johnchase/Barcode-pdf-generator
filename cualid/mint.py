@@ -1,22 +1,40 @@
+from functools import lru_cache
 import uuid
 
 
-def hamming(s1, s2):
-    count_diff = 0
-    for i1, i2 in zip(s1, s2):
-        if i1 != i2:
-            count_diff += 1
-    return count_diff
+@lru_cache(maxsize=2048)
+def levenshtein(query, ref):
+    # Recursive levenshtein distance
+    if not query:
+        return len(ref)
+    if not ref:
+        return len(query)
+    if query[0] == ref[0]:
+        return levenshtein(query[1:], ref[1:])
+
+    d1 = levenshtein(query[1:], ref)
+    d2 = levenshtein(query[1:], ref[1:])
+    d3 = levenshtein(query, ref[1:])
+
+    return min(d1, d2, d3) + 1
 
 
-def at_least_distance(query, existing, d=3):
+def get_near_matches(query, existing, distance=3):
+    matches = []
     for e in existing:
-        if hamming(query, e) < d:
+        if levenshtein(query, e) <= distance:
+            matches.append(e)
+    return matches
+
+
+def at_least_distance(query, existing, distance=3):
+    for e in existing:
+        if levenshtein(query, e) < distance:
             return False
     return True
 
 
-def create_ids(n, id_length, min_distance=3, failure_threshold=0.99):
+def create_ids(n, id_length, failure_threshold=0.99):
     uuids = []
     hrids = []
     failures = 0
@@ -25,7 +43,7 @@ def create_ids(n, id_length, min_distance=3, failure_threshold=0.99):
         trys += 1
         uuid_ = uuid.uuid4()
         hrid = uuid_.hex[-id_length:]
-        if at_least_distance(hrid, hrids, d=min_distance):
+        if at_least_distance(hrid, hrids):
             uuids.append(uuid_)
             hrids.append(hrid)
             yield (uuid_, hrid)
