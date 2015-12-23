@@ -64,7 +64,7 @@ class TestFixIDs(unittest.TestCase):
 correct1 = io.StringIO("c0b5d3ae-d2d4-4aa5-bd51-76c93e223bb9\t23bb9\n"
                        "0b95a10f-0610-434f-9734-4d2ac02c0cab\tc0cab\n"
                        "ef09be86-dfee-4ce1-84d4-e60b5df87696\t87696\n"
-                       "c13f1644-cab9-4474-b674-1442efc7869b\t7869b\n"
+                       "c13f1644-cab9-4474-b674-1442efc7849b\t7849b\n"
                        "b60e7c07-bbf9-468c-a8f0-98639f2d50cc\td50cc\n")
 
 correct2 = io.StringIO("9563938c-72db-4cf4-aa1c-b8843ce05576\t843ce05576\n"
@@ -77,7 +77,7 @@ correct2 = io.StringIO("9563938c-72db-4cf4-aa1c-b8843ce05576\t843ce05576\n"
 identical = io.StringIO("23bb9\n"
                         "c0cab\n"
                         "87696\n"
-                        "7869b\n"
+                        "7849b\n"
                         "d50cc\n")
 
 bad = io.StringIO("xxxxx\n"
